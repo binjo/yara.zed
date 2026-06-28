@@ -1,49 +1,77 @@
 ; Comments
 (comment) @comment
 
-; Keywords
+; Preprocessor / Top-level Keywords
 [
-  "global"
   "import"
-  "private"
-] @constant.builtin
+  "include"
+] @keyword.control
 
 [
-  "rule"
-] @function
+  "private"
+  "global"
+] @keyword.modifier
 
+"rule" @keyword
+
+; Sections (Emacs warning face)
 [
   "meta"
   "strings"
   "condition"
-] @property
+] @keyword.control
 
-; Operators
+; Rule details
+(rule_definition
+  name: (identifier) @function)
+
+(tag) @tag
+
+; Meta definition keys
+(meta_definition
+  key: (identifier) @property)
+
+; Variables and String Identifiers
+(string_identifier) @variable
+
+; Literals
+(integer_decimal_positive) @constant.numeric
+(integer_zero) @constant.numeric
+(integer_hexadecimal) @constant.numeric
+(size_unit) @constant.numeric
+(double_quoted_string) @string
+(single_quoted_string) @string
+(escape_sequence) @string.escape
+(text_string) @string
+
 [
-  "matches"
-  "contains"
-  "icontains"
-  "imatches"
-  "startswith"
-  "istartswith"
-  "endswith"
-  "iendswith"
-  "and"
-  "or"
-  "not"
-  "=="
-  "!="
-  "<"
-  ">"
-  ">="
-  "<="
-  "of"
+  "true"
+  "false"
+] @constant.boolean
+
+; Hex Strings
+(hex_string) @string.special
+(hex_seq) @string.special
+(hex_byte) @constant.numeric
+(hex_jump) @constant.numeric
+
+; Regular expressions
+(regex_string) @string.regexp
+(regular_expression) @string.regexp
+
+; Control structures and keywords
+[
   "for"
+  "in"
+  "of"
+] @keyword.control
+
+[
   "all"
   "any"
   "none"
-  "in"
-] @string.special
+  "them"
+] @keyword.control
 
 ; String modifiers
 [
@@ -56,59 +84,57 @@
   "base64wide"
 ] @keyword.modifier
 
-; Numbers and sizes
-(integer_literal) @constant.numeric
-(size_unit) @constant.numeric
-
-; Strings
-(double_quoted_string) @string
-(single_quoted_string) @string
-(escape_sequence) @string.escape
-(text_string) @text.literal
-
-; Hex strings
-(hex_string) @string.special
-(hex_byte) @constant.numeric
-(hex_wildcard) @constant.builtin
-(hex_jump) @constant.numeric
-
-; Regular expressions
-(regex_string) @string.regexp
-(pattern) @string.regexp
-
-; Boolean literals
-[
-  "true"
-  "false"
-] @constant.boolean
-
-; Keywords and special identifiers
-[
-  "them"
-  "all"
-  "any"
-  "none"
-] @keyword.operator
-
-
-; String identifiers
-"$" @string.special.symbol
-(identifier) @string
-(string_identifier) @string.special.symbol
-
 ; Built-ins
 [
   (filesize_keyword)
-  (entrypoint_keyword)
 ] @constant.builtin
 
-; Tags
-(tag_list
-  [(identifier) (tag)] @tag)
+; Modules and Functions (e.g. pe.import_rva)
+(module_identifier) @type
+(module_var_or_func name: (identifier) @function)
 
-; Punctuation and delimiters
+; Built-in functions & types matching Emacs
+((identifier) @function.builtin
+  (#match? @function.builtin "^(int(8|16|32)(be)?|uint(8|16|32)(be)?|math\\.[a-z_]+)$"))
+
+; General identifiers (fallback)
+(identifier) @variable
+
+; Operators
+[
+  "and"
+  "or"
+  "not"
+  "defined"
+  "matches"
+  "contains"
+  "icontains"
+  "startswith"
+  "istartswith"
+  "endswith"
+  "iendswith"
+  "iequals"
+] @keyword.operator
+
 [
   "="
+  "=="
+  "!="
+  "<"
+  ">"
+  ">="
+  "<="
+  "+"
+  "-"
+  "*"
+  "\\"
+  "%"
+  ".."
+  "|"
+] @operator
+
+; Punctuation & Delimiters
+[
   ":"
   "{"
   "}"
@@ -116,22 +142,5 @@
   "]"
   "("
   ")"
-  "#"
-  "@"
-  ".."
-  "|"
   ","
-  "!"
-  "/"
-  "\""
-  "'"
-  "*"
-] @string.special.symbol
-
-; Rule names
-(rule_definition
-  name: (identifier) @string.special)
-
-; Meta definitions
-(meta_definition
-  key: (identifier) @string.special)
+] @punctuation.delimiter

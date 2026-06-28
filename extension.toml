@@ -7,8 +7,8 @@ description = "Yara syntax highlighting for Zed."
 repository = "https://github.com/egibs/yara.zed"
 
 [grammars.yara]
-repository = "https://github.com/egibs/tree-sitter-yara.git"
-commit = "eb3ede203275c38000177f72ec0f9965312806ef"
+repository = "https://github.com/celstur/tree-sitter-yara.git"
+commit = "b49d980b2e111e0b09a6a8bae18b3fa2b6cf4797"
 
 [language_servers.yls]
 name = "yls"
