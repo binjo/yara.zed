@@ -10,6 +10,6 @@ repository = "https://github.com/egibs/yara.zed"
 repository = "https://github.com/celstur/tree-sitter-yara.git"
 commit = "b49d980b2e111e0b09a6a8bae18b3fa2b6cf4797"
 
-[language_servers.yls]
-name = "yls"
+[language_servers.yr-ls]
+name = "yr-ls"
 languages = ["Yara"]

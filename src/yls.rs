@@ -12,14 +12,26 @@ impl Extension for YaraExtension {
         _language_server_id: &zed_extension_api::LanguageServerId,
         _worktree: &zed_extension_api::Worktree,
     ) -> zed_extension_api::Result<zed_extension_api::Command> {
-        match _worktree.which("yls") {
-            Some(path) => Ok(zed_extension_api::process::Command {
-                command: path,
-                args: vec!["-v".into()],
-                env: vec![],
-            }),
-            None => Err("Unable to find yls from worktree.".into()),
+        let server_name = _language_server_id.as_ref();
+        if server_name == "yr-ls" {
+            if let Some(path) = _worktree.which("yr-ls") {
+                return Ok(zed_extension_api::process::Command {
+                    command: path,
+                    args: vec![],
+                    env: vec![],
+                });
+            }
+            if let Some(path) = _worktree.which("yls") {
+                return Ok(zed_extension_api::process::Command {
+                    command: path,
+                    args: vec!["-v".into()],
+                    env: vec![],
+                });
+            }
+            return Err("Unable to find yr-ls or yls from worktree.".into());
         }
+
+        Err(format!("Unknown language server: {}", server_name).into())
     }
 }
 
